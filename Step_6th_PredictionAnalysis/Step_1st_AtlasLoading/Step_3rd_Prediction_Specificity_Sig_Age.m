@@ -26,7 +26,9 @@ Motion_Fold1 = Behavior.Motion(Index_Fold1);
     double([Sex_Fold0 Motion_Fold0]));
 [ParCorr_Actual_Fold1, ~] = partialcorr(Prediction_Fold1.Predict_Score', Age_Fold1, ...
     double([Sex_Fold1 Motion_Fold1]));
-mean([ParCorr_Actual_Fold0 ParCorr_Actual_Fold1]);
+ParCorr_Actual_Mean = mean([ParCorr_Actual_Fold0 ParCorr_Actual_Fold1]);
+save([Prediction_ResFolder '/ParCorr.mat'], 'ParCorr_Actual_Fold0', 'ParCorr_Actual_Fold1', ...
+        'ParCorr_Actual_Mean');
 
 %% Significance
 AgePrediction_PermutationFolder = [PredictionFolder '/AtlasLoading/2Fold_Sort_Permutation_Age'];

@@ -3,7 +3,7 @@ import scipy.io as sio
 import numpy as np
 import os
 import sys
-sys.path.append('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/scripts/Toolbox');
+sys.path.append('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/scripts/Functions');
 import Ridge_CZ_Sort
 
 PredictionFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/PredictionAnalysis';

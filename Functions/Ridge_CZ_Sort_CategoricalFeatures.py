@@ -219,7 +219,7 @@ def Ridge_SubAlpha(Training_Data, Training_Score, Testing_Data, Testing_Score, A
     MAE_inv = np.divide(1, np.mean(np.abs(Predict_Score - Testing_Score)))
     result = {'Corr': Corr, 'MAE_inv':MAE_inv}
     ResultantFile = ResultantFolder + '/Alpha_' + str(Alpha_ID) + '.mat'
-    sio.savemat(ResultantFile, Fold_result)
+    sio.savemat(ResultantFile, result)
     
 def Ridge_Weight(Subjects_Data, Subjects_Score, CV_Flag, CV_FoldQuantity_or_Alpha, Alpha_Range, ResultantFolder, Parallel_Quantity):
 

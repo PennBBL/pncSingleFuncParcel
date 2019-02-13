@@ -1,8 +1,8 @@
 
 clear
 
-PredictionFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/results/PredictionAnalysis';
-AgePrediction_ResFolder = [PredictionFolder '/AtlasLabel_17_100/2Fold_Sort_Age'];
+PredictionFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/PredictionAnalysis';
+AgePrediction_ResFolder = [PredictionFolder '/AtlasLabel/2Fold_Sort_Age'];
 Prediction_Fold0 = load([AgePrediction_ResFolder '/Fold_0_Score.mat']);
 Corr_Actual_Fold0 = Prediction_Fold0.Corr;
 MAE_Actual_Fold0 = Prediction_Fold0.MAE;
@@ -29,7 +29,7 @@ Motion_Fold1 = Behavior.Motion(Index_Fold1);
 mean([ParCorr_Actual_Fold0 ParCorr_Actual_Fold1]);
 
 %% Significance
-AgePrediction_PermutationFolder = [PredictionFolder '/AtlasLabel_17_100/2Fold_Sort_Permutation_Age'];
+AgePrediction_PermutationFolder = [PredictionFolder '/AtlasLabel/2Fold_Sort_Permutation_Age'];
 % Fold 0
 Permutation_Fold0_Cell = g_ls([AgePrediction_PermutationFolder '/Time_*/Fold_0_Score.mat']);
 for i = 1:1000
@@ -40,7 +40,7 @@ for i = 1:1000
 end
 ParCorr_Fold0_Sig = length(find(ParCorr_Rand_Fold0 >= ParCorr_Actual_Fold0)) / 1000;
 MAE_Fold0_Sig = length(find(MAE_Rand_Fold0 <= MAE_Actual_Fold0)) / 1000;
-save([PredictionFolder '/AtlasLabel_17_100/2Fold_Sort_Fold0_Specificity_Sig_Age.mat'], 'ParCorr_Actual_Fold0', 'ParCorr_Rand_Fold0', 'ParCorr_Fold0_Sig', 'MAE_Actual_Fold0', 'MAE_Rand_Fold0', 'MAE_Fold0_Sig');
+save([PredictionFolder '/AtlasLabel/2Fold_Sort_Fold0_Specificity_Sig_Age.mat'], 'ParCorr_Actual_Fold0', 'ParCorr_Rand_Fold0', 'ParCorr_Fold0_Sig', 'MAE_Actual_Fold0', 'MAE_Rand_Fold0', 'MAE_Fold0_Sig');
 % Fold 1
 Permutation_Fold1_Cell = g_ls([AgePrediction_PermutationFolder '/Time_*/Fold_1_Score.mat']);
 for i = 1:1000
@@ -51,4 +51,6 @@ for i = 1:1000
 end
 ParCorr_Fold1_Sig = length(find(ParCorr_Rand_Fold1 >= ParCorr_Actual_Fold1)) / 1000;
 MAE_Fold1_Sig = length(find(MAE_Rand_Fold1 <= MAE_Actual_Fold1)) / 1000;
-save([PredictionFolder '/AtlasLabel_17_100/2Fold_Sort_Fold1_Specificity_Sig_Age.mat'], 'ParCorr_Actual_Fold1', 'ParCorr_Rand_Fold1', 'ParCorr_Fold1_Sig', 'MAE_Actual_Fold1', 'MAE_Rand_Fold1', 'MAE_Fold1_Sig');
+save([PredictionFolder '/AtlasLabel/2Fold_Sort_Fold1_Specificity_Sig_Age.mat'], 'ParCorr_Actual_Fold1', 'ParCorr_Rand_Fold1', 'ParCorr_Fold1_Sig', 'MAE_Actual_Fold1', 'MAE_Rand_Fold1', 'MAE_Fold1_Sig');
+
+

@@ -14,7 +14,11 @@ surfMR = [SubjectsFolder '/label/rh.Medial_wall.label'];
 mwIndVec_r = read_medial_wall_label(surfMR);
 Index_r = setdiff([1:10242], mwIndVec_r);
 
-sbj_AtlasLoading_NoMedialWall = GroupAtlasLoading_Mat.initV;
+initV = GroupAtlasLoading_Mat.initV;
+initV_Max = max(initV);
+trimInd = initV ./ max(repmat(initV_Max, size(initV, 1), 1), eps) < 5e-2;
+initV(trimInd) = 0;
+sbj_AtlasLoading_NoMedialWall = initV;
 [~, sbj_AtlasLabel_NoMedialWall] = max(sbj_AtlasLoading_NoMedialWall, [], 2);
 sbj_AtlasLabel_lh = zeros(1, 10242);
 sbj_AtlasLoading_lh = zeros(17, 10242);

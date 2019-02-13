@@ -19,14 +19,14 @@ Behavior_New$TBV <- as.numeric(Behavior$mprage_antsCT_vol_TBV);
 Behavior_New$Handedness <- as.factor(Behavior$handednessv2);
 Behavior_New$F1_Exec_Comp_Res_Accuracy <- as.numeric(Behavior$F1_Exec_Comp_Res_Accuracy);
 Behavior_New$F3_Executive_Efficiency <- as.numeric(Behavior$F3_Executive_Efficiency);
-ARI_Individual_Group_Hongming_File <- paste0(ReplicationFolder, '/results/ARI/ARI_Individual_Group_Hongming.mat');
-ARI_Individual_Group_Hongming_Mat <- readMat(ARI_Individual_Group_Hongming_File);
-ARI_Individual_Group_Hongming_Data <- data.frame(BBLID = as.numeric(ARI_Individual_Group_Hongming_Mat$BBLID));
-ARI_Individual_Group_Hongming_Data$ARI_Individual_Group_Hongming <- as.numeric(ARI_Individual_Group_Hongming_Mat$ARI.Individual.Group);
-Behavior_New <- merge(Behavior_New, ARI_Individual_Group_Hongming_Data, by = "BBLID", sort = FALSE);
+Corr_Individual_Group_Hongming_File <- paste0(ReplicationFolder, '/results/ARI/Corr_Individual_Group_LoadingHongming.mat');
+Corr_Individual_Group_Hongming_Mat <- readMat(Corr_Individual_Group_Hongming_File);
+Corr_Individual_Group_Hongming_Data <- data.frame(BBLID = as.numeric(Corr_Individual_Group_Hongming_Mat$BBLID));
+Corr_Individual_Group_Hongming_Data$Corr_Individual_Group_Hongming <- as.numeric(Corr_Individual_Group_Hongming_Mat$Corr.Individual.Group);
+Behavior_New <- merge(Behavior_New, Corr_Individual_Group_Hongming_Data, by = "BBLID", sort = FALSE);
 
 # Age and cognition effect of network size
-Gam_Analysis <- gam(ARI_Individual_Group_Hongming ~ s(AgeYears, k=4) + Sex_factor + TBV + Motion, method = "REML", data = Behavior_New);
+Gam_Analysis <- gam(Corr_Individual_Group_Hongming ~ s(AgeYears, k=4) + Sex_factor + TBV + Motion, method = "REML", data = Behavior_New);
 plotdata <- visreg(Gam_Analysis, 'AgeYears', type = "conditional", plot = FALSE);
 smooths <- data.frame(Variable = plotdata$meta$x,
                       x = plotdata$fit[[plotdata$meta$x]],
@@ -45,10 +45,10 @@ Fig <- ggplot() +
        scale_y_continuous(limits = c(0.35, 0.58), breaks = c(0.35, 0.45, 0.55)) +
        scale_x_continuous(limits = c(8, 23), breaks = c(8:23)) + 
        #geom_point(color = '#000000', size = 1.5) +
-       xlab('AgeYears') + ylab('ARI (individual vs. group)')
+       xlab('AgeYears') + ylab('Corr (individual vs. group)')
 Fig
 #ggsave(paste(WorkFolder, '/AgeEffect_WholeBrainLevel_Scatter.tiff', sep = ''), width = 17, height = 15, dpi = 300, units = "cm");
 
-Gam_Analysis_Cognition <- gam(ARI_Individual_Group_Hongming ~ F1_Exec_Comp_Res_Accuracy + s(AgeYears, k=4) + Sex_factor + Motion, method = "REML", data = Behavior_New);
+Gam_Analysis_Cognition <- gam(Corr_Individual_Group_Hongming ~ F1_Exec_Comp_Res_Accuracy + s(AgeYears, k=4) + Sex_factor + Motion, method = "REML", data = Behavior_New);
 visreg(Gam_Analysis_Cognition, 'F1_Exec_Comp_Res_Accuracy');
 visreg(Gam_Analysis_Cognition, 'AgeYears');

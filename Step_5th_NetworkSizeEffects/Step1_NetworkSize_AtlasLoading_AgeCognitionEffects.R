@@ -62,32 +62,33 @@ Gam_P_Vector_Cognition_WholeNetworkSum_FDR = p.adjust(Gam_P_Vector_Cognition_Who
 data <- data.frame(AgeEffects_Z = as.numeric(Gam_Z_Vector_Age_WholeNetworkSum));
 data$EffectRank <- rank(data$AgeEffects_Z);
 Fig <- ggplot(data, aes(EffectRank, AgeEffects_Z)) +
-            geom_bar(stat = "identity", fill=c("#AF33AD", "#E76178",
-            "#F5BA2E", "#E76178", "#F5BA2E", "#7499C2", "#AF33AD",
-            "#F5BA2E", "#00A131", "#00A131", "#7499C2", "#00A131",
-            "#F5BA2E", "#7499C2", "#E76178", "#EBE297", "#E443FF"), width = 0.8);
+            geom_bar(stat = "identity", fill=c("#AF33AD", "#E76178", 
+            "#F5BA2E", "#E76178", "#7499C2", "#F5BA2E", "#AF33AD",
+            "#00A131", "#F5BA2E", "#00A131", "#7499C2", "#00A131", 
+            "#E443FF", "#E76178", "#7499C2", "#F5BA2E", "#EBE297"), width = 0.8);
 Fig <- Fig + labs(x = "", y = "Age Effect (Z)") + theme_classic()
 Fig <- Fig + theme(axis.text.x = element_text(size= 17.5, color = "black"), axis.text.y = element_text(size= 24, color = "black"), axis.title=element_text(size = 26))
 Fig + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-             scale_x_discrete(limits = c("Network 6 (Visual)", "Network 1 (DM)",
-             "Network 10 (FP)", "Network 3 (DM)", "Network 17 (FP)", "Network 2 (Motor)",
-             "Network 7 (Visual)", "Network 14 (FP)", "Network 13 (DA)", "Network 15 (DA)",
-             "Network 9 (Motor)", "Network 8 (DA)", "Network 5 (FP)", "Network 16 (Motor)",
-             "Network 12 (DM)", "Network 4 (Limbic)", "Network 11 (VA)"));
+             scale_x_discrete(limits = c("Network 6 (Visual)", "Network 3 (DM)", 
+             "Network 17 (FP)", "Network 1 (DM)", "Network 2 (Motor)", "Network 10 (FP)",
+             "Network 7 (Visual)", "Network 13 (DA)", "Network 14 (FP)", "Network 15 (DA)",
+             "Network 9 (Motor)", "Network 8 (DA)", "Network 11 (VA)", "Network 12 (DM)", 
+             "Network 16 (Motor)", "Network 5 (FP)", "Network 4 (Limbic)"));
 # bar plot for cognition effects
 data <- data.frame(AgeEffects_Z_Cognition = as.numeric(Gam_Z_Vector_Cognition_WholeNetworkSum));
 data$EffectRank <- rank(data$AgeEffects_Z_Cognition);
 Fig <- ggplot(data, aes(EffectRank, AgeEffects_Z_Cognition)) +
-            geom_bar(stat = "identity", fill=c("#E76178", "#AF33AD",
-            "#7499C2", "#00A131", "#EBE297", "#AF33AD", "#F5BA2E",
-            "#F5BA2E", "#7499C2", "#E443FF", "#E76178", "#7499C2",
-            "#00A131", "#E76178", "#00A131", "#F5BA2E", "#F5BA2E"), width = 0.8);
+            geom_bar(stat = "identity", fill=c("#7499C2", "#E76178", "#AF33AD",
+            "#AF33AD", "#00A131", "#EBE297", "#7499C2", "#F5BA2E",
+            "#F5BA2E", "#E76178", "#00A131", "#E443FF", "#7499C2",
+            "#E76178", "#00A131", "#F5BA2E", "#F5BA2E"), width = 0.8);
 Fig <- Fig + labs(x = "", y = "Cognition Effect (Z)") + theme_classic()
 Fig <- Fig + theme(axis.text.x = element_text(size= 17.5, color = "black"), axis.text.y = element_text(size= 24, color = "black"), axis.title=element_text(size = 26))
 Fig + theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-             scale_x_discrete(limits = c("Network 3 (DM)", "Network 6 (Visual)",
-             "Network 16 (Motor)", "Network 13 (DA)", "Network 4 (Limbic)", "Network 7 (Visual)",
-             "Network 17 (FP)", "Network 14 (FP)", "Network 2 (Motor)", "Network 11 (VA)",  
-             "Network 1 (DM)", "Network 9 (Motor)", "Network 15 (DA)", "Network 12 (DM)", 
+             scale_x_discrete(limits = c("Network 16 (Motor)", "Network 3 (DM)", 
+             "Network 6 (Visual)", "Network 7 (Visual)", "Network 13 (DA)", 
+             "Network 4 (Limbic)", "Network 2 (Motor)", "Network 14 (FP)", 
+             "Network 17 (FP)", "Network 1 (DM)", "Network 15 (DA)", 
+             "Network 11 (VA)", "Network 9 (Motor)", "Network 12 (DM)", 
              "Network 8 (DA)", "Network 10 (FP)", "Network 5 (FP)"));
 

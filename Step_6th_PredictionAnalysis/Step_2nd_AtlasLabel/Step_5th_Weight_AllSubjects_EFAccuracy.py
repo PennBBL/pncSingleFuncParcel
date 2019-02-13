@@ -12,17 +12,13 @@ AtlasLabel_Folder = PredictionFolder + '/AtlasLabel';
 AtlasLabel_Mat = sio.loadmat(AtlasLabel_Folder + '/AtlasLabel_All.mat');
 Behavior_Mat = sio.loadmat(PredictionFolder + '/Behavior_713.mat');
 SubjectsData = AtlasLabel_Mat['AtlasLabel_All'];
-AgeYears = Behavior_Mat['AgeYears'];
-AgeYears = np.transpose(AgeYears);
+Behavior = Behavior_Mat['F1_Exec_Comp_Res_Accuracy'];
+Behavior = np.transpose(Behavior);
 # Range of parameters
 Alpha_Range = np.exp2(np.arange(16) - 10);
 
-FoldQuantity = 2;
+ResultantFolder = AtlasLabel_Folder + '/Weight_EFAccuracy';
+Ridge_CZ_Sort_CategoricalFeatures.Ridge_Weight(SubjectsData, Behavior, 1, 2, Alpha_Range, ResultantFolder, 1)
 
-ResultantFolder = AtlasLabel_Folder + '/2Fold_Sort_Age';
-Ridge_CZ_Sort_CategoricalFeatures.Ridge_KFold_Sort(SubjectsData, AgeYears, FoldQuantity, Alpha_Range, ResultantFolder, 1, 0);
 
-# Permutation test, 1,000 times
-Times_IDRange = np.arange(1000);
-ResultantFolder = AtlasLabel_Folder + '/2Fold_Sort_Permutation_Age';
-Ridge_CZ_Sort_CategoricalFeatures.Ridge_KFold_Sort_Permutation(SubjectsData, AgeYears, Times_IDRange, FoldQuantity, Alpha_Range, ResultantFolder, 1, 1000, 'all.q,basic.q')
+

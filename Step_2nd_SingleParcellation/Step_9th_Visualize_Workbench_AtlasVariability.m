@@ -51,7 +51,23 @@ for m = 1:17
     eval(cmd);
     Variability_rh(n) = median(abs(tmp_data - median(tmp_data)));
   end
-  
+
+  % write to files
+  V_lh = gifti;
+  V_lh.cdata = Variability_lh';
+  V_lh_File = [Variability_Visualize_Folder '/Variability_lh_' num2str(m) '.func.gii'];
+  save(V_lh, V_lh_File);
+  V_rh = gifti;
+  V_rh.cdata = Variability_rh';
+  V_rh_File = [Variability_Visualize_Folder '/Variability_rh_' num2str(m) '.func.gii'];
+  save(V_rh, V_rh_File);
+  % convert into cifti file
+  cmd = ['wb_command -cifti-create-dense-scalar ' Variability_Visualize_Folder '/Variability_' num2str(m) ...
+         '.dscalar.nii -left-metric ' V_lh_File ' -right-metric ' V_rh_File];
+  system(cmd);
+  pause(1);
+  system(['rm -rf ' V_lh_File ' ' V_rh_File]);
+ 
   Variability_All_lh(m, :) = Variability_lh;
   Variability_All_rh(m, :) = Variability_rh;
 end

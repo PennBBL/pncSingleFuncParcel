@@ -1,16 +1,15 @@
 
 clear
-ResultsFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/results';
+ResultsFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results';
 PredictionFolder = [ResultsFolder '/PredictionAnalysis'];
 Behavior_Mat = load([PredictionFolder '/Behavior_713.mat']);
 BBLID = Behavior_Mat.BBLID;
 
-% Atlas 17
-AtlasLabel_17 = [ResultsFolder '/Atlas_Surface/Parcel_3Modality_TaskRegress_17/SingleParcel_1by1_100/FinalLabel_NoMedialWall'];
+AtlasLabel_Folder = [ResultsFolder '/SingleParcellation/SingleAtlas_Analysis/FinalAtlasLabel'];
 for i = 1:length(BBLID)
     i
-    tmp = load([AtlasLabel_17 '/' num2str(BBLID(i)) '.mat']); 
-    AtlasLabel_17_All(i, :) = tmp.sbj_Label;
+    tmp = load([AtlasLabel_Folder '/' num2str(BBLID(i)) '.mat']); 
+    AtlasLabel_All(i, :) = tmp.sbj_AtlasLabel_NoMedialWall;
 end
-mkdir([PredictionFolder '/AtlasLabel_17_100']);
-save([PredictionFolder '/AtlasLabel_17_100/AtlasLabel_17_All.mat'], 'AtlasLabel_17_All');
+mkdir([PredictionFolder '/AtlasLabel']);
+save([PredictionFolder '/AtlasLabel/AtlasLabel_All.mat'], 'AtlasLabel_All');

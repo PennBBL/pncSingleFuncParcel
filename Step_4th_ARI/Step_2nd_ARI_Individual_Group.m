@@ -10,6 +10,7 @@ Hongming_Group_Atlas = load([ResultsFolder '/SingleParcellation/SingleAtlas_Anal
 Hongming_Group_Label = [Hongming_Group_Atlas.sbj_AtlasLabel_lh'; Hongming_Group_Atlas.sbj_AtlasLabel_rh'];
 
 ResultantFolder = [ResultsFolder '/ARI'];
+mkdir(ResultantFolder);
 for i = 1:length(BBLID)
   i
   Hongming_Data_Mat = load([Hongming_Folder '/' num2str(BBLID(i))]);
