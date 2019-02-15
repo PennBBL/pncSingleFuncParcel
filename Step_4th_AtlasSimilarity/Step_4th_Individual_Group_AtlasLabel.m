@@ -10,7 +10,7 @@ Hongming_Group_Label = [Hongming_Group_Atlas.sbj_AtlasLabel_lh'; Hongming_Group_
 NonZeroIndex = find(Hongming_Group_Label ~= 0); % Removing medial wall
 Hongming_Group_Label = Hongming_Group_Label(NonZeroIndex);
 
-ResultantFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/ARI';
+ResultantFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/AtlasSimilarity';
 for i = 1:length(BBLID)
   i
   Hongming_Data_Mat = load([Hongming_Folder '/' num2str(BBLID(i))]);
@@ -29,10 +29,3 @@ end
 ARI_Individual_Group_System_MeanAcrossSubjects = mean(ARI_Individual_Group_System)
 save([ResultantFolder '/ARI_Individual_Group_Hongming_System.mat'], 'ARI_Individual_Group_System', 'BBLID', 'ARI_Individual_Group_System_MeanAcrossSubjects');
 
-ARI_Hongming_Individual_Group = Hongming_Group_Label;
-for i = 1:17
-  ARI_Hongming_Individual_Group(find(Hongming_Group_Label == i)) = ARI_Individual_Group_System_MeanAcrossSubjects(i);
-end
-ARI_Hongming_Individual_Group_All = zeros(1, 20484);
-ARI_Hongming_Individual_Group_All(NonZeroIndex) = ARI_Hongming_Individual_Group;
-% write into image

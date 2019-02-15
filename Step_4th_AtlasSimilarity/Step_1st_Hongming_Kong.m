@@ -7,7 +7,7 @@ Kong_Folder = [ResultsFolder '/SingleParcellation_Kong/WorkingFolder/ind_parcell
 Demogra_Info = csvread([ReplicationFolder '/data/pncSingleFuncParcel_n713_SubjectsIDs.csv'],1);
 BBLID = Demogra_Info(:, 1);
 
-ResultantFolder = [ResultsFolder '/ARI'];
+ResultantFolder = [ResultsFolder '/AtlasSimilarity'];
 mkdir(ResultantFolder);
 for i = 1:length(BBLID)
   i

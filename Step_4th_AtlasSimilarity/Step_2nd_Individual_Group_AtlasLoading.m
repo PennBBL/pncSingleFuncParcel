@@ -9,7 +9,7 @@ BBLID = Demogra_Info(:, 1);
 Hongming_Group_Atlas = load([ResultsFolder '/SingleParcellation/SingleAtlas_Analysis/Group_AtlasLoading.mat']);
 Hongming_Group_Loading = Hongming_Group_Atlas.sbj_AtlasLoading_NoMedialWall;
 
-ResultantFolder = [ResultsFolder '/ARI'];
+ResultantFolder = [ResultsFolder '/AtlasSimilarity'];
 for i = 1:length(BBLID)
   i
   Hongming_Data_Mat = load([Hongming_Folder '/' num2str(BBLID(i))]);
