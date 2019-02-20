@@ -15,7 +15,7 @@ ggplot(data = Data_tmp1, aes(Evo_rh_NoMedialWall, Variability_rh_NoMedialWall)) 
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Evolutionary Expansion", y = "Atlas Variability") + 
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-    scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Evo.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Principle gradient
 Data_tmp2 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
@@ -26,7 +26,7 @@ ggplot(data = Data_tmp2, aes(PrincipleGradient_All_NoMedialWall, Variability_All
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Principle Gradient", y = "Atlas Variability") +
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
-    scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Gradient.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Myelin
 Data_tmp3 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
@@ -48,7 +48,7 @@ ggplot(data = Data_tmp4, aes(Myelin_All_NoMedialWall, Variability_All_NoMedialWa
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Myelin", y = "Atlas Variability") +
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-    scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Myelin.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Allometric scaling
 Data_tmp5 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
@@ -70,7 +70,7 @@ ggplot(data = Data_tmp5, aes(AllometricScaling_All_NoMedialWall, Variability_All
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Allometric Scaling", y = "Atlas Variability") +
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-    scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Scaling.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Mean CBF
 Data_tmp5 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
@@ -92,7 +92,7 @@ ggplot(data = Data_tmp5, aes(MeanCBF_All_NoMedialWall, Variability_All_NoMedialW
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Mean CBF", y = "Atlas Variability") +
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
-    scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_MeanCBF.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 
 # Significance

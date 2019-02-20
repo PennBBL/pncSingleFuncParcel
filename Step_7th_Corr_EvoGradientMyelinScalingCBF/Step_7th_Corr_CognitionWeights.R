@@ -14,7 +14,8 @@ ggplot(data = Data_tmp1, aes(Evo_rh, CognitionWeights_rh_NoMedialWall)) +
     geom_hex() +
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Evolutionary Expansion", y = "EF Prediction Weights") + 
-    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30))
+    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/EFPredictionWeights_Evo.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # CognitionWeights vs. Principle gradient
 Data_tmp2 = data.frame(CognitionWeights_All_NoMedialWall = as.numeric(Data_Mat$CognitionWeights.All.NoMedialWall));
@@ -24,7 +25,8 @@ ggplot(data = Data_tmp2, aes(PrincipleGradient_All_NoMedialWall, CognitionWeight
     geom_hex() +
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Principle Gradient", y = "EF Prediction Weights") +
-    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) 
+    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/EFPredictionWeights_Gradient.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # CognitionWeights vs. Myelin
 Data_tmp3 = data.frame(CognitionWeights_All_NoMedialWall = as.numeric(Data_Mat$CognitionWeights.All.NoMedialWall));
@@ -68,7 +70,7 @@ ggplot(data = Data_tmp5, aes(AllometricScaling_All_NoMedialWall, CognitionWeight
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Allometric Scaling", y = "EF Prediction Weights") +
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
-    scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/EFPredictionWeights_Scaling.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # CognitionWeights vs. Mean CBF
 Data_tmp5 = data.frame(CognitionWeights_All_NoMedialWall = as.numeric(Data_Mat$CognitionWeights.All.NoMedialWall));
@@ -90,7 +92,7 @@ ggplot(data = Data_tmp5, aes(MeanCBF_All_NoMedialWall, CognitionWeights_All_NoMe
     scale_fill_gradientn(colours = myPalette) +
     theme_classic() + labs(x = "Mean CBF", y = "EF Prediction Weights") +
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-    scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/EFPredictionWeights_MeanCBF.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 
 # Significance

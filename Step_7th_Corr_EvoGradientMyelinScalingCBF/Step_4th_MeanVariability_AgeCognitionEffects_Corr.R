@@ -16,9 +16,9 @@ ggplot(data = data_Age, aes(Variability_Data, AgeWeights_Mean)) +
          scale_fill_gradientn(colours = myPalette) +
          theme_classic() + labs(x = "Atlas variability", y = "Prediction weights") +
          theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30), aspect.ratio = 1) +
-         scale_x_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05)) + 
-         scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
-ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/AgeWeights_Variability.tiff', width = 17, height = 15, dpi = 600, units = "cm");
+         scale_x_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05)) + 
+         scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/AgePredictionWeights_Variability.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 # Cognition prediction weights vs. atlas variability
 data_Cognition = data.frame(Variability_Data = as.numeric(t(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall)));
 data_Cognition$CognitionWeights_Mean = as.numeric(Data_Mat$CognitionWeights.All.NoMedialWall);
@@ -28,9 +28,9 @@ ggplot(data = data_Cognition, aes(Variability_Data, CognitionWeights_Mean)) +
         scale_fill_gradientn(colours = myPalette) +
         theme_classic() + labs(x = "Atlas variability", y = "Prediction weights") +
         theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30), aspect.ratio = 1) +
-        scale_x_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05)) +
-        scale_y_continuous(limits = c(0, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
-ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/EFWeights_Variability.tiff', width = 17, height = 15, dpi = 600, units = "cm");
+        scale_x_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05)) +
+        scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/EFPredictionWeights_Variability.tiff', width = 17, height = 15, dpi = 600, units = "cm");
 
 # Significance
 # AgeWeights vs. variability
