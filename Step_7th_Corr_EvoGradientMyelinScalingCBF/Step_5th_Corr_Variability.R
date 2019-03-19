@@ -1,33 +1,50 @@
 
 library(R.matlab)
 library(ggplot2)
+library(hexbin)
 
 Folder = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Corr_EvoGradientMyelinScalingCBF';
 Data_Mat = readMat(paste0(Folder, '/AllData.mat'));
 
-myPalette <- c("#9b2948", "#ff7251", "#ffca7b", "#ffcd74", "#ffedbf");
+myPalette <- c("#333333", "#4C4C4C", "#666666", "#7F7F7F", "#999999", "#B2B2B2", "#CCCCCC");
 # Variability vs. Evolutionary expansion
 Data_tmp1 = data.frame(Variability_rh_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.rh.NoMedialWall));
 Data_tmp1$Evo_rh_NoMedialWall = as.numeric(Data_Mat$Evo.rh.NoMedialWall);
 cor.test(Data_tmp1$Variability_rh_NoMedialWall, Data_tmp1$Evo_rh_NoMedialWall, method = "spearman")
-ggplot(data = Data_tmp1, aes(Evo_rh_NoMedialWall, Variability_rh_NoMedialWall)) +
-    geom_hex() + 
-    scale_fill_gradientn(colours = myPalette) +
-    theme_classic() + labs(x = "Evolutionary Expansion", y = "Atlas Variability") + 
-    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
-ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Evo.tiff', width = 17, height = 15, dpi = 600, units = "cm");
+
+hexinfo <- hexbin(Data_tmp1$Evo_rh_NoMedialWall, Data_tmp1$Variability_rh_NoMedialWall, xbins = 30);
+data_hex <- data.frame(hcell2xy(hexinfo), count = hexinfo@count);
+ggplot() +
+    #geom_hex(data = data_hex, aes(x, y, fill = count), stat = "identity") +
+    geom_hex(data = subset(data_hex, count > 10), aes(x, y, fill = count), stat = "identity") +
+    scale_fill_gradientn(colours = myPalette, breaks = c(20, 40, 60)) + 
+    geom_smooth(data = Data_tmp1, aes(x = Evo_rh_NoMedialWall, y = Variability_rh_NoMedialWall), method = lm, color = "#FFFFFF", linetype = "dashed") +
+    theme_classic() + labs(x = "Evolutionary Expansion", y = "Network Variability") + 
+    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30), aspect.ratio = 1) +
+    theme(legend.text = element_text(size = 18), legend.title = element_text(size = 18)) +
+    theme(legend.justification = c(1, 1), legend.position = c(1.03, 1.03)) +
+    scale_x_continuous(limits = c(-2.2, 3.0), breaks = c(-2, -1, 0, 1, 2, 3)) + 
+    scale_y_continuous(limits = c(-0.000001, 0.049), breaks = c(0, 0.01, 0.02, 0.03, 0.04));
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Evo.pdf', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Principle gradient
 Data_tmp2 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
 Data_tmp2$PrincipleGradient_All_NoMedialWall = as.numeric(Data_Mat$PrincipleGradient.All.NoMedialWall);
 cor.test(Data_tmp2$Variability_All_NoMedialWall, Data_tmp2$PrincipleGradient_All_NoMedialWall, method = "spearman");
-ggplot(data = Data_tmp2, aes(PrincipleGradient_All_NoMedialWall, Variability_All_NoMedialWall)) + 
-    geom_hex() +
+
+hexinfo <- hexbin(Data_tmp2$PrincipleGradient_All_NoMedialWall, Data_tmp2$Variability_All_NoMedialWall, xbins = 30);
+data_hex <- data.frame(hcell2xy(hexinfo), count = hexinfo@count);
+ggplot() +
+    #geom_hex(data = data_hex, aes(x, y, fill = count), stat = "identity") +
+    geom_hex(data = subset(data_hex, count > 10), aes(x, y, fill = count), stat = "identity") +
     scale_fill_gradientn(colours = myPalette) +
-    theme_classic() + labs(x = "Principle Gradient", y = "Atlas Variability") +
-    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
-    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
-ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Gradient.tiff', width = 17, height = 15, dpi = 600, units = "cm");
+    geom_smooth(data = Data_tmp2, aes(x = PrincipleGradient_All_NoMedialWall, y = Variability_All_NoMedialWall), method = lm, color = "#FFFFFF", linetype = "dashed") +
+    theme_classic() + labs(x = "Principal Gradient", y = "Network Variability") +
+    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30), aspect.ratio = 1) +
+    theme(legend.text = element_text(size = 18), legend.title = element_text(size = 18)) +
+    theme(legend.justification = c(1, 1), legend.position = c(1.03, 1.03)) +
+    scale_x_continuous(limits = c(-6, 7.8), breaks = c(-6, -3, 0, 3, 6)) +
+    scale_y_continuous(limits = c(-0.000001, 0.049), breaks = c(0, 0.01, 0.02, 0.03, 0.04));
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Gradient.pdf', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Myelin
 Data_tmp3 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
 Data_tmp3$Myelin_All_NoMedialWall = as.numeric(Data_Mat$Myelin.All.NoMedialWall);
@@ -43,13 +60,21 @@ Index = which(Data_Mat$Myelin.All.NoMedialWall >= 1);
 Data_tmp4 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]));
 Data_tmp4$Myelin_All_NoMedialWall = as.numeric(Data_Mat$Myelin.All.NoMedialWall[Index]);
 cor.test(Data_tmp4$Variability_All_NoMedialWall, Data_tmp4$Myelin_All_NoMedialWall, method = "spearman");
-ggplot(data = Data_tmp4, aes(Myelin_All_NoMedialWall, Variability_All_NoMedialWall)) +
-    geom_hex() +
+
+hexinfo <- hexbin(Data_tmp4$Myelin_All_NoMedialWall, Data_tmp4$Variability_All_NoMedialWall, xbins = 30);
+data_hex <- data.frame(hcell2xy(hexinfo), count = hexinfo@count);
+ggplot() +
+    #geom_hex(data = data_hex, aes(x, y, fill = count), stat = "identity") +
+    geom_hex(data = subset(data_hex, count > 10), aes(x, y, fill = count), stat = "identity") +
     scale_fill_gradientn(colours = myPalette) +
-    theme_classic() + labs(x = "Myelin", y = "Atlas Variability") +
-    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
-ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Myelin.tiff', width = 17, height = 15, dpi = 600, units = "cm");
+    geom_smooth(data = Data_tmp4, aes(x = Myelin_All_NoMedialWall, y = Variability_All_NoMedialWall), method = lm, color = "#FFFFFF", linetype = "dashed") +
+    theme_classic() + labs(x = "Myelin", y = "Network Variability") +
+    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30), aspect.ratio = 1) +
+    theme(legend.text = element_text(size = 18), legend.title = element_text(size = 18)) +
+    theme(legend.justification = c(1, 1), legend.position = c(1.02, 1.02)) +
+    scale_x_continuous(limits = c(0.98, 1.9), breaks = c(1.0, 1.2, 1.4, 1.6, 1.8)) +
+    scale_y_continuous(limits = c(-0.000001, 0.049), breaks = c(0, 0.01, 0.02, 0.03, 0.04));
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Myelin.pdf', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Allometric scaling
 Data_tmp5 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
 Data_tmp5$AllometricScaling_All_NoMedialWall = as.numeric(Data_Mat$AllometricScaling.All.NoMedialWall);
@@ -60,23 +85,31 @@ ggplot(data = Data_tmp5, aes(AllometricScaling_All_NoMedialWall, Variability_All
     theme_classic() + labs(x = "Allometric scaling", y = "Variability") +
     theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
     scale_fill_manual("", values = "grey12");
-# Variability vs. Allometric scaling
+# Variability vs. Allometric scaling (from the figure above, we found several points drives the correlation, restricting with allometric scaling >= 0.4)
 Index = which(Data_Mat$AllometricScaling.All.NoMedialWall >= 0.4);
-Data_tmp5 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]));
-Data_tmp5$AllometricScaling_All_NoMedialWall = as.numeric(Data_Mat$AllometricScaling.All.NoMedialWall[Index]);
-cor.test(Data_tmp5$Variability_All_NoMedialWall, Data_tmp5$AllometricScaling_All_NoMedialWall, method = "spearman");
-ggplot(data = Data_tmp5, aes(AllometricScaling_All_NoMedialWall, Variability_All_NoMedialWall)) +
-    geom_hex() +
-    scale_fill_gradientn(colours = myPalette) +
-    theme_classic() + labs(x = "Allometric Scaling", y = "Atlas Variability") +
-    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
-ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Scaling.tiff', width = 17, height = 15, dpi = 600, units = "cm");
+Data_tmp6 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]));
+Data_tmp6$AllometricScaling_All_NoMedialWall = as.numeric(Data_Mat$AllometricScaling.All.NoMedialWall[Index]);
+cor.test(Data_tmp6$Variability_All_NoMedialWall, Data_tmp6$AllometricScaling_All_NoMedialWall, method = "spearman");
+
+hexinfo <- hexbin(Data_tmp6$AllometricScaling_All_NoMedialWall, Data_tmp6$Variability_All_NoMedialWall, xbins = 30);
+data_hex <- data.frame(hcell2xy(hexinfo), count = hexinfo@count);
+ggplot() +
+    #geom_hex(data = data_hex, aes(x, y, fill = count), stat = "identity") +
+    geom_hex(data = subset(data_hex, count > 10), aes(x, y, fill = count), stat = "identity") +
+    scale_fill_gradientn(colours = myPalette, breaks = c(50, 100)) +
+    geom_smooth(data = Data_tmp6, aes(x = AllometricScaling_All_NoMedialWall, y = Variability_All_NoMedialWall), method = lm, color = "#FFFFFF", linetype = "dashed") +
+    theme_classic() + labs(x = "Allometric Scaling", y = "Network Variability") +
+    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30), aspect.ratio = 1) +
+    theme(legend.text = element_text(size = 18), legend.title = element_text(size = 18)) +
+    theme(legend.justification = c(1, 1), legend.position = c(1.03, 1.03)) +
+    scale_x_continuous(limits = c(0.4, 1.5), breaks = c(0.5, 1,0, 1.5)) +
+    scale_y_continuous(limits = c(-0.000001, 0.049), breaks = c(0, 0.01, 0.02, 0.03, 0.04));
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_Scaling.pdf', width = 17, height = 15, dpi = 600, units = "cm");
 # Variability vs. Mean CBF
-Data_tmp5 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
-Data_tmp5$MeanCBF_All_NoMedialWall = as.numeric(Data_Mat$MeanCBF.All.NoMedialWall);
-cor.test(Data_tmp5$Variability_All_NoMedialWall, Data_tmp5$MeanCBF_All_NoMedialWall, method = "spearman");
-ggplot(data = Data_tmp5, aes(MeanCBF_All_NoMedialWall, Variability_All_NoMedialWall)) +
+Data_tmp7 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall));
+Data_tmp7$MeanCBF_All_NoMedialWall = as.numeric(Data_Mat$MeanCBF.All.NoMedialWall);
+cor.test(Data_tmp7$Variability_All_NoMedialWall, Data_tmp7$MeanCBF_All_NoMedialWall, method = "spearman");
+ggplot(data = Data_tmp7, aes(MeanCBF_All_NoMedialWall, Variability_All_NoMedialWall)) +
     geom_point() +
     geom_smooth(method = lm) +
     theme_classic() + labs(x = "Mean CBF", y = "Variability") +
@@ -84,16 +117,24 @@ ggplot(data = Data_tmp5, aes(MeanCBF_All_NoMedialWall, Variability_All_NoMedialW
     scale_fill_manual("", values = "grey12");
 # Variability vs. Mean CBF
 Index = which(Data_Mat$MeanCBF.All.NoMedialWall >= 27);
-Data_tmp5 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]));
-Data_tmp5$MeanCBF_All_NoMedialWall = as.numeric(Data_Mat$MeanCBF.All.NoMedialWall[Index]);
-cor.test(Data_tmp5$Variability_All_NoMedialWall, Data_tmp5$MeanCBF_All_NoMedialWall, method = "spearman");
-ggplot(data = Data_tmp5, aes(MeanCBF_All_NoMedialWall, Variability_All_NoMedialWall)) +
-    geom_hex() +
-    scale_fill_gradientn(colours = myPalette) +
-    theme_classic() + labs(x = "Mean CBF", y = "Atlas Variability") +
-    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
-    scale_y_continuous(limits = c(-0.000001, 0.053), breaks = c(0, 0.01, 0.02, 0.03, 0.04, 0.05));
-ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_MeanCBF.tiff', width = 17, height = 15, dpi = 600, units = "cm");
+Data_tmp8 = data.frame(Variability_All_NoMedialWall = as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]));
+Data_tmp8$MeanCBF_All_NoMedialWall = as.numeric(Data_Mat$MeanCBF.All.NoMedialWall[Index]);
+cor.test(Data_tmp8$Variability_All_NoMedialWall, Data_tmp8$MeanCBF_All_NoMedialWall, method = "spearman");
+
+hexinfo <- hexbin(Data_tmp8$MeanCBF_All_NoMedialWall, Data_tmp8$Variability_All_NoMedialWall, xbins = 30);
+data_hex <- data.frame(hcell2xy(hexinfo), count = hexinfo@count);
+ggplot() +
+    #geom_hex(data = data_hex, aes(x, y, fill = count), stat = "identity") +
+    geom_hex(data = subset(data_hex, count > 10), aes(x, y, fill = count), stat = "identity") +
+    scale_fill_gradientn(colours = myPalette, breaks = c(40, 80)) +
+    geom_smooth(data = Data_tmp8, aes(x = MeanCBF_All_NoMedialWall, y = Variability_All_NoMedialWall), method = lm, color = "#FFFFFF", linetype = "dashed") +
+    theme_classic() + labs(x = "Mean CBF", y = "Network Variability") +
+    theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30), aspect.ratio = 1) +
+    theme(legend.text = element_text(size = 18), legend.title = element_text(size = 18)) +
+    theme(legend.justification = c(1, 1), legend.position = c(1.02, 1.02)) +
+    scale_x_continuous(limits = c(32, 88), breaks = c(40, 60, 80)) +
+    scale_y_continuous(limits = c(-0.000001, 0.049), breaks = c(0, 0.01, 0.02, 0.03, 0.04));
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/Variability_MeanCBF.pdf', width = 17, height = 15, dpi = 600, units = "cm");
 
 # Significance
 # Variability vs. evolutionary expansion
@@ -110,6 +151,21 @@ for (i in c(1:1000))
 }
 P_Value = length(which(Perm_Corr_Evo >= Actual_Corr_Evo)) / 1000;
 print(paste0('P value (variability vs. evo): ', as.character(P_Value)));
+  # Plot for permutation distribution
+PermutationData = data.frame(x = t(Perm_Corr_Evo));
+PermutationData$Line_x = as.numeric(matrix(0.51, 1, 1000));
+PermutationData$Line_y = as.numeric(seq(0,90,length.out=1000));
+ggplot(PermutationData) +
+    geom_histogram(aes(x = x), bins = 30, color = "#999999", fill = "#999999") +
+    #geom_point(aes(x = Actual_Corr, y = 0), size=3) +
+    geom_line(aes(x = Line_x, y = Line_y, group = 1), size = 1, color = 'red', linetype = "dashed") +
+    theme_classic() + labs(x = "", y = "") +
+    theme(axis.text=element_text(size=50, color='black'), aspect.ratio = 1) +
+    theme(axis.line.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(limits = c(-0.6, 0.6), breaks = c(-0.5, 0, 0.5), labels = c('-0.5', '0', '0.5'))
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/SpinTestDensity_Variability_Evo.pdf', width = 17, height = 15, dpi = 600, units = "cm");
+
 # Variability vs. principle gradients
 tmp_data = cor.test(as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall), 
                     as.numeric(Data_Mat$PrincipleGradient.All.NoMedialWall), method = "spearman");
@@ -124,6 +180,21 @@ for (i in c(1:1000))
 }
 P_Value = length(which(Perm_Corr_Gradient >= Actual_Corr_Gradient)) / 1000;
 print(paste0('P value (variability vs. principle gradient): ', as.character(P_Value)));
+  # Plot for permutation distribution
+PermutationData = data.frame(x = t(Perm_Corr_Gradient));
+PermutationData$Line_x = as.numeric(matrix(0.43, 1, 1000));
+PermutationData$Line_y = as.numeric(seq(0,90,length.out=1000));
+ggplot(PermutationData) +
+    geom_histogram(aes(x = x), bins = 30, color = "#999999", fill = "#999999") +
+    #geom_point(aes(x = Actual_Corr, y = 0), size=3) +
+    geom_line(aes(x = Line_x, y = Line_y, group = 1), size = 1, color = 'red', linetype = "dashed") +
+    theme_classic() + labs(x = "", y = "") +
+    theme(axis.text=element_text(size=50, color='black'), aspect.ratio = 1) +
+    theme(axis.line.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(limits = c(-0.6, 0.6), breaks = c(-0.5, 0, 0.5), labels = c('-0.5', '0', '0.5'))
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/SpinTestDensity_Variability_Gradient.pdf', width = 17, height = 15, dpi = 600, units = "cm");
+
 # Variability vs. myelin
 Index = which(Data_Mat$Myelin.All.NoMedialWall >= 1);
 tmp_data = cor.test(as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]),
@@ -139,6 +210,21 @@ for (i in c(1:1000))
 }
 P_Value = length(which(Perm_Corr_Myelin <= Actual_Corr_Myelin)) / 1000;
 print(paste0('P value (variability vs. myelin): ', as.character(P_Value)));
+  # Plot for permutation distribution
+PermutationData = data.frame(x = t(Perm_Corr_Myelin));
+PermutationData$Line_x = as.numeric(matrix(-0.36, 1, 1000));
+PermutationData$Line_y = as.numeric(seq(0,76,length.out=1000));
+ggplot(PermutationData) +
+    geom_histogram(aes(x = x), bins = 30, color = "#999999", fill = "#999999") +
+    #geom_point(aes(x = Actual_Corr, y = 0), size=3) +
+    geom_line(aes(x = Line_x, y = Line_y, group = 1), size = 1, color = 'red', linetype = "dashed") +
+    theme_classic() + labs(x = "", y = "") +
+    theme(axis.text=element_text(size=50, color='black'), aspect.ratio = 1) +
+    theme(axis.line.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(limits = c(-0.5, 0.5), breaks = c(-0.3, 0, 0.3), labels = c('-0.3', '0', '0.3'))
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/SpinTestDensity_Variability_Myelin.pdf', width = 17, height = 15, dpi = 600, units = "cm");
+
 # Variability vs allometric scaling
 Index = which(Data_Mat$AllometricScaling.All.NoMedialWall >= 0.4);
 tmp_data = cor.test(as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]),
@@ -154,8 +240,23 @@ for (i in c(1:1000))
 }
 P_Value = length(which(Perm_Corr_Scaling >= Actual_Corr_Scaling)) / 1000;
 print(paste0('P value (variability vs. allometric scaling): ', as.character(P_Value)));
+  # Plot for permutation distribution
+PermutationData = data.frame(x = t(Perm_Corr_Scaling));
+PermutationData$Line_x = as.numeric(matrix(0.37, 1, 1000));
+PermutationData$Line_y = as.numeric(seq(0,130,length.out=1000));
+ggplot(PermutationData) +
+    geom_histogram(aes(x = x), bins = 30, color = "#999999", fill = "#999999") +
+    #geom_point(aes(x = Actual_Corr, y = 0), size=3) +
+    geom_line(aes(x = Line_x, y = Line_y, group = 1), size = 1, color = 'red', linetype = "dashed") +
+    theme_classic() + labs(x = "", y = "") +
+    theme(axis.text=element_text(size=50, color='black'), aspect.ratio = 1) +
+    theme(axis.line.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(limits = c(-0.5, 0.5), breaks = c(-0.3, 0, 0.3), labels = c('-0.3', '0', '0.3'))
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/SpinTestDensity_Variability_Scaling.pdf', width = 17, height = 15, dpi = 600, units = "cm");
+
 # Variability vs MeanCBF
-Index = which(Data_Mat$MeanCBF.All.NoMedialWall >= 0.4);
+Index = which(Data_Mat$MeanCBF.All.NoMedialWall >= 27);
 tmp_data = cor.test(as.numeric(Data_Mat$VariabilityLoading.17SystemMean.All.NoMedialWall[Index]),
                     as.numeric(Data_Mat$MeanCBF.All.NoMedialWall[Index]), method = "spearman");
 Actual_Corr_CBF = tmp_data$estimate;
@@ -169,3 +270,18 @@ for (i in c(1:1000))
 }
 P_Value = length(which(Perm_Corr_CBF >= Actual_Corr_CBF)) / 1000;
 print(paste0('P value (variability vs. mean CBF): ', as.character(P_Value)));
+  # Plot for permutation distribution
+PermutationData = data.frame(x = t(Perm_Corr_CBF));
+PermutationData$Line_x = as.numeric(matrix(0.32, 1, 1000));
+PermutationData$Line_y = as.numeric(seq(0,110,length.out=1000));
+ggplot(PermutationData) +
+    geom_histogram(aes(x = x), bins = 30, color = "#999999", fill = "#999999") +
+    #geom_point(aes(x = Actual_Corr, y = 0), size=3) +
+    geom_line(aes(x = Line_x, y = Line_y, group = 1), size = 1, color = 'red', linetype = "dashed") +
+    theme_classic() + labs(x = "", y = "") +
+    theme(axis.text=element_text(size=50, color='black'), aspect.ratio = 1) +
+    theme(axis.line.y = element_blank(), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+    scale_y_continuous(expand = c(0, 0)) +
+    scale_x_continuous(limits = c(-0.5, 0.5), breaks = c(-0.3, 0, 0.3), labels = c('-0.3', '0', '0.3'))
+ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/SpinTestDensity_Variability_MeanCBF.pdf', width = 17, height = 15, dpi = 600, units = "cm");
+

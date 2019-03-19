@@ -18,14 +18,18 @@ function Atlas_Homogeneity(AtlasLabel_File_Path, Image_lh_Path, Image_rh_Path, R
     AtlasLabel_Unique = setdiff(AtlasLabel_Unique, 0);
     AtlasLabel_Quantity = length(AtlasLabel_Unique);
     for j = 1:AtlasLabel_Quantity
+        j
         System_Index{j} = find(sbj_AtlasLabel == AtlasLabel_Unique(j));
-        Vertex_Quantity(j) = length(System_Index{j});
+        Vertex_Quantity = length(System_Index{j});
         Conn_System = Data_All(System_Index{j}, :)';
-        Corr_WithinSystem = corr(Conn_System); % correlation between each two time points
-        Corr_WithinSystem(find(eye(size(Corr_WithinSystem)))) = 0; % Assign the diag elements with 0
-        Corr_WithinSystem_Avg(j) = sum(sum(Corr_WithinSystem)) / (Vertex_Quantity(j) * Vertex_Quantity(j) - Vertex_Quantity(j)); 
+        MeanTimeSeries = mean(Conn_System, 2);
+        for k = 1:Vertex_Quantity
+            Corr_WithinSystem(k) = corr(MeanTimeSeries, Conn_System(:, k));
+        end
+        Homogeneity_WithinNetwork(j) = sum(Corr_WithinSystem) / Vertex_Quantity; 
+        clear Corr_WithinSystem;
     end
-    Conn_Homogeneity = sum(Corr_WithinSystem_Avg .* Vertex_Quantity) / sum(Vertex_Quantity);
-    Corr_WithinSystem_Avg = (Corr_WithinSystem_Avg .* Vertex_Quantity) / sum(Vertex_Quantity); % Correct the homogeneity of each system by the parcel size
-    save(ResultantFile, 'Corr_WithinSystem_Avg', 'Conn_Homogeneity');
+    Homogeneity_Overall = mean(Homogeneity_WithinNetwork);
+    save(ResultantFile, 'Homogeneity_WithinNetwork', 'Homogeneity_Overall');
+
 

@@ -29,24 +29,9 @@ Behavior_Fold1 = data.frame(Age = as.numeric(Behavior$Age[Index_Fold1]));
 Behavior_Fold1$Sex = as.numeric(Behavior$Sex[Index_Fold1]);
 Behavior_Fold1$Motion = as.numeric(Behavior$Motion[Index_Fold1]);
 
-Color_Fold0 = '#ff7251';
-Color_Fold1 = '#ffcd74';
+Color_Fold0 = '#7F7F7F'; #'#000000'; #'#FF5252';
+Color_Fold1 = '#000000'; #'#7F7F7F'; #'#448AFF';
 
-# Fold 0
-Energy_lm <- lm(PredictScore_Fold0 ~ Age + Sex + Motion, data = Behavior_Fold0);
-plotdata <- visreg(Energy_lm, "Age", type = "conditional", scale = "linear", plot = FALSE);
-smooths <- data.frame(Variable = plotdata$meta$x, 
-                      x = plotdata$fit[[plotdata$meta$x]],
-                      smooth = plotdata$fit$visregFit,
-                      lower = plotdata$fit$visregLwr,
-                      upper = plotdata$fit$visregUpr);
-predicts <- data.frame(Variable = "dim1",
-                      x = plotdata$res$Age,
-                      y = plotdata$res$visregRes)
-Fig <- ggplot() + 
-       geom_point(data = predicts, aes(x, y), colour = Color_Fold0, size = 1.8) + 
-       geom_line(data = smooths, aes(x = x, y = smooth), colour = Color_Fold0, size = 1.5) + 
-       geom_ribbon(data = smooths, aes(x = x, ymin = lower, ymax = upper), fill = Color_Fold0, alpha = 0.2);
 # Fold 1
 Energy_lm <- lm(PredictScore_Fold1 ~ Age + Sex + Motion, data = Behavior_Fold1);
 plotdata <- visreg(Energy_lm, "Age", type = "conditional", scale = "linear", plot = FALSE);
@@ -58,13 +43,29 @@ smooths_Fold1 <- data.frame(Variable = plotdata$meta$x,
 predicts_Fold1 <- data.frame(Variable = "dim1",
                       x = plotdata$res$Age,
                       y = plotdata$res$visregRes)
-Fig <- Fig + 
-       geom_point(data = predicts_Fold1, aes(x, y), colour = Color_Fold1, size = 1.8) +
+Fig <- ggplot() +
+       geom_point(data = predicts_Fold1, aes(x, y), colour = Color_Fold1, size = 2) +
        geom_line(data = smooths_Fold1, aes(x = x, y = smooth), colour = Color_Fold1, size = 1.5) +
-       geom_ribbon(data = smooths_Fold1, aes(x = x, ymin = lower, ymax = upper), fill = Color_Fold1, alpha = 0.2) + 
+       geom_ribbon(data = smooths_Fold1, aes(x = x, ymin = lower, ymax = upper), fill = Color_Fold1, alpha = 0.2)
+# Fold 0
+Energy_lm <- lm(PredictScore_Fold0 ~ Age + Sex + Motion, data = Behavior_Fold0);
+plotdata <- visreg(Energy_lm, "Age", type = "conditional", scale = "linear", plot = FALSE);
+smooths <- data.frame(Variable = plotdata$meta$x, 
+                      x = plotdata$fit[[plotdata$meta$x]],
+                      smooth = plotdata$fit$visregFit,
+                      lower = plotdata$fit$visregLwr,
+                      upper = plotdata$fit$visregUpr);
+predicts <- data.frame(Variable = "dim1",
+                      x = plotdata$res$Age,
+                      y = plotdata$res$visregRes)
+Fig <- Fig + 
+       geom_point(data = predicts, aes(x, y), colour = Color_Fold0, size = 2, shape = 17) + 
+       geom_line(data = smooths, aes(x = x, y = smooth), colour = Color_Fold0, size = 1.5) + 
+       geom_ribbon(data = smooths, aes(x = x, ymin = lower, ymax = upper), fill = Color_Fold0, alpha = 0.2) + 
        theme_classic() + labs(x = "Chronological Age (years)", y = "Brain Maturity Index") +
-       theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) + 
-       scale_x_continuous(limits = c(8, 23), breaks = c(8, 12, 16, 20)) + 
-       scale_y_continuous(limits = c(8, 23), breaks = c(8, 12, 16, 20)) 
+       theme(axis.text=element_text(size=25, color='black'), axis.title=element_text(size=30)) +
+       scale_x_continuous(limits = c(8, 23), breaks = c(8, 12, 16, 20)) +
+       scale_y_continuous(limits = c(8, 23), breaks = c(8, 12, 16, 20))
 Fig
+
 ggsave('/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/Figures/AgePrediction_CorrACC.tiff', width = 17, height = 15, dpi = 600, units = "cm");

@@ -9,8 +9,10 @@ AtlasLoading_Folder = [ResultsFolder '/SingleParcellation/SingleAtlas_Analysis/F
 for i = 1:length(BBLID)
     i
     tmp = load([AtlasLoading_Folder '/' num2str(BBLID(i)) '.mat']); 
-    [rowQuantity, colQuantity] = size(tmp.sbj_AtlasLoading_NoMedialWall);
-    AtlasLoading_All(i, :) = reshape(tmp.sbj_AtlasLoading_NoMedialWall, 1, rowQuantity * colQuantity);
+    sbj_AtlasLoading_NoMedialWall_Tmp = tmp.sbj_AtlasLoading_NoMedialWall;
+    sbj_AtlasLoading_NoMedialWall_Tmp(:, 4) = [];
+    [rowQuantity, colQuantity] = size(sbj_AtlasLoading_NoMedialWall_Tmp);
+    AtlasLoading_All(i, :) = reshape(sbj_AtlasLoading_NoMedialWall_Tmp, 1, rowQuantity * colQuantity);
 end
 AtlasLoading_Sum = sum(AtlasLoading_All);
 NonZeroIndex = find(AtlasLoading_Sum);

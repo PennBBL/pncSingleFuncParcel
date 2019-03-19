@@ -111,10 +111,10 @@ for m = 1:10242
   m
   for n = 1:17
     % left hemi
-    Probability_lh(m, n) = length(find(sbj_AtlasLabel_lh_Matrix(:, m) == n)) / 10242;
+    Probability_lh(m, n) = length(find(sbj_AtlasLabel_lh_Matrix(:, m) == n)) / 713;
     Probability_lh(m, n) = Probability_lh(m, n) * log2(Probability_lh(m, n));
     % right hemi
-    Probability_rh(m, n) = length(find(sbj_AtlasLabel_rh_Matrix(:, m) == n)) / 10242;
+    Probability_rh(m, n) = length(find(sbj_AtlasLabel_rh_Matrix(:, m) == n)) / 713;
     Probability_rh(m, n) = Probability_rh(m, n) * log2(Probability_rh(m, n));
   end
   Probability_lh(find(isnan(Probability_lh))) = 0;

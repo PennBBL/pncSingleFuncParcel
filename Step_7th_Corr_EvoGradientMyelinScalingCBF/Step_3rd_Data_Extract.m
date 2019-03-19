@@ -37,7 +37,7 @@ CognitionWeights_Perm = load([EvoGradientEtc_ResultsFolder '/PermuteData_SpinTes
 CognitionWeights_Perm_All_NoMedialWall = [CognitionWeights_Perm.bigrotl(:, Index_l) CognitionWeights_Perm.bigrotr(:, Index_r)];
 CognitionWeights_Perm_rh_NoMedialWall = CognitionWeights_Perm.bigrotr(:, Index_r);
 
-EvoGradientEtc_DataFolder = [ReplicationFolder '/data/EvoGradientMyelinScalingCBF'];
+EvoGradientEtc_DataFolder = [ReplicationFolder '/data/EvoGradientMyelinScalingPETGluCBF'];
 % load evolutionary expansion
 Evo_rh_gifti = gifti([EvoGradientEtc_DataFolder '/EvolutionaryExpansion/rh.Hill2010_evo_fsaverage5.func.gii']);
 Evo_rh = Evo_rh_gifti.cdata;

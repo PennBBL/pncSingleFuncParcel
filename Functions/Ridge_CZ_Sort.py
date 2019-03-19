@@ -7,8 +7,7 @@ import time
 from sklearn import linear_model
 from sklearn import preprocessing
 from joblib import Parallel, delayed
-import statsmodels.formula.api as sm
-CodesPath = '/data/jux/BBL/projects/pncSingleFuncParcel/scripts/Toolbox';
+CodesPath = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/scripts/Functions';
   
 def Ridge_KFold_Sort_Permutation(Subjects_Data, Subjects_Score, Times_IDRange, Fold_Quantity, Alpha_Range, ResultantFolder, Parallel_Quantity, Max_Queued, Queue):
     

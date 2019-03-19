@@ -2,14 +2,14 @@
 clear
 
 PredictionFolder = '/data/jux/BBL/projects/pncSingleFuncParcel/Replication/results/PredictionAnalysis';
-Prediction_ResFolder = [PredictionFolder '/AtlasLoading/2Fold_Sort_EFAccuracy'];
+EFPrediction_ResFolder = [PredictionFolder '/AtlasLoading/2Fold_Sort_EFAccuracy'];
 Behavior = load([PredictionFolder '/Behavior_713.mat']);
 
-Prediction_Fold0 = load([Prediction_ResFolder '/Fold_0_Score.mat']);
+Prediction_Fold0 = load([EFPrediction_ResFolder '/Fold_0_Score.mat']);
 Corr_Actual_Fold0 = Prediction_Fold0.Corr;
 MAE_Actual_Fold0 = Prediction_Fold0.MAE;
 Index_Fold0 = Prediction_Fold0.Index + 1;
-Prediction_Fold1 = load([Prediction_ResFolder '/Fold_1_Score.mat']);
+Prediction_Fold1 = load([EFPrediction_ResFolder '/Fold_1_Score.mat']);
 Corr_Actual_Fold1 = Prediction_Fold1.Corr;
 MAE_Actual_Fold1 = Prediction_Fold1.MAE;
 Index_Fold1 = Prediction_Fold1.Index + 1;
@@ -33,7 +33,7 @@ Motion_Fold1 = Behavior.Motion(Index_Fold1);
 [ParCorr_Actual_Fold1, ~] = partialcorr(Prediction_Fold1.Predict_Score', BehaviorScore_Tested_Fold1, ...
         double([Age_Fold1 Sex_Fold1 Motion_Fold1]));
 ParCorr_Actual_Mean = mean([ParCorr_Actual_Fold0 ParCorr_Actual_Fold1]);
-save([Prediction_ResFolder '/ParCorr.mat'], 'ParCorr_Actual_Fold0', 'ParCorr_Actual_Fold1', ...
+save([EFPrediction_ResFolder '/ParCorr.mat'], 'ParCorr_Actual_Fold0', 'ParCorr_Actual_Fold1', ...
         'ParCorr_Actual_Mean');
 
 %% Significance
@@ -48,7 +48,7 @@ for i = 1:1000
 end
 ParCorr_Fold0_Sig = length(find(ParCorr_Rand_Fold0 >= ParCorr_Actual_Fold0)) / 1000;
 MAE_Fold0_Sig = length(find(MAE_Rand_Fold0 <= MAE_Actual_Fold0)) / 1000;
-save([PredictionFolder '/AtlasLoading/2Fold_Sort_Fold0_Specificity_Sig_EFAccuracy.mat'], 'ParCorr_Actual_Fold0', 'ParCorr_Rand_Fold0', 'ParCorr_Fold0_Sig', 'MAE_Actual_Fold0', 'MAE_Rand_Fold0', 'MAE_Fold0_Sig');
+save([EFPrediction_ResFolder '/2Fold_Sort_Fold0_Specificity_Sig_EFAccuracy.mat'], 'ParCorr_Actual_Fold0', 'ParCorr_Rand_Fold0', 'ParCorr_Fold0_Sig', 'MAE_Actual_Fold0', 'MAE_Rand_Fold0', 'MAE_Fold0_Sig');
 % Fold 1
 Permutation_Fold1_Cell = g_ls([EFAccuracyPrediction_PermutationFolder '/Time_*/Fold_1_Score.mat']);
 for i = 1:1000
@@ -59,5 +59,5 @@ for i = 1:1000
 end
 ParCorr_Fold1_Sig = length(find(ParCorr_Rand_Fold1 >= ParCorr_Actual_Fold1)) / 1000;
 MAE_Fold1_Sig = length(find(MAE_Rand_Fold1 <= MAE_Actual_Fold1)) / 1000;
-save([PredictionFolder '/AtlasLoading/2Fold_Sort_Fold1_Specificity_Sig_EFAccuracy.mat'], 'ParCorr_Actual_Fold1', 'ParCorr_Rand_Fold1', 'ParCorr_Fold1_Sig', 'MAE_Actual_Fold1', 'MAE_Rand_Fold1', 'MAE_Fold1_Sig');
+save([EFPrediction_ResFolder '/2Fold_Sort_Fold1_Specificity_Sig_EFAccuracy.mat'], 'ParCorr_Actual_Fold1', 'ParCorr_Rand_Fold1', 'ParCorr_Fold1_Sig', 'MAE_Actual_Fold1', 'MAE_Rand_Fold1', 'MAE_Fold1_Sig');
 

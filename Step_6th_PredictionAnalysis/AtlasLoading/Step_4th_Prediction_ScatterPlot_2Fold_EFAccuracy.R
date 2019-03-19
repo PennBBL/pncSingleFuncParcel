@@ -31,8 +31,8 @@ Behavior_Fold1$Sex = as.numeric(Behavior$Sex[Index_Fold1]);
 Behavior_Fold1$Motion = as.numeric(Behavior$Motion[Index_Fold1]);
 Behavior_Fold1$F1_Exec_Comp_Res_Accuracy = as.numeric(Behavior$F1.Exec.Comp.Res.Accuracy[Index_Fold1]);
 
-Color_Fold0 = '#ff7251';
-Color_Fold1 = '#ffcd74';
+Color_Fold0 = '#000000';
+Color_Fold1 = '#7F7F7F'; 
 
 # Fold 0
 Energy_lm <- lm(PredictScore_Fold0 ~ F1_Exec_Comp_Res_Accuracy + Age + Sex + Motion, data = Behavior_Fold0);
@@ -46,7 +46,7 @@ predicts <- data.frame(Variable = "dim1",
                       x = plotdata$res$F1_Exec_Comp_Res_Accuracy,
                       y = plotdata$res$visregRes)
 Fig <- ggplot() + 
-       geom_point(data = predicts, aes(x, y), colour = Color_Fold0, size = 1.8) + 
+       geom_point(data = predicts, aes(x, y), colour = Color_Fold0, size = 2) + 
        geom_line(data = smooths, aes(x = x, y = smooth), colour = Color_Fold0, size = 1.5) + 
        geom_ribbon(data = smooths, aes(x = x, ymin = lower, ymax = upper), fill = Color_Fold0, alpha = 0.2)
 # Fold 1
@@ -61,7 +61,7 @@ predicts_Fold1 <- data.frame(Variable = "dim1",
                       x = plotdata$res$F1_Exec_Comp_Res_Accuracy,
                       y = plotdata$res$visregRes)
 Fig <- Fig + 
-       geom_point(data = predicts_Fold1, aes(x, y), colour = Color_Fold1, size = 1.8) +
+       geom_point(data = predicts_Fold1, aes(x, y), colour = Color_Fold1, size = 2, shape = 17) +
        geom_line(data = smooths_Fold1, aes(x = x, y = smooth), colour = Color_Fold1, size = 1.5) +
        geom_ribbon(data = smooths_Fold1, aes(x = x, ymin = lower, ymax = upper), fill = Color_Fold1, alpha = 0.2) + 
        theme_classic() + labs(x = "Actual EF Performance", y = "Predicted EF Performance") +
